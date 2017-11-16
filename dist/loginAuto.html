@@ -7,14 +7,13 @@
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
-  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" /> {% if isMikrotik %}
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
   <script type="text/javascript" charset="utf-8" src="http://{{ domain }}/vs{{ dev.get_hashid }}/?origin=gg&login=$(link-login-only)&dst=$(link-orig-esc)$(if trial == 'yes')&trial=true$(endif)&mac=$(mac-esc)$(if chap-id == 'yes')&chap=true&chap-id=$(chap-id)&chap-challenge=$(chap-challenge)$(endif)$(if error)&error=$(error)$(endif)&ip=$(ip)"></script>
-  {% endif %}
 </head>
 
 <body>
   <div>
-    <form name="login" action="" method="get">
+    <form id="loginForm" name="login" action="$(link-login-only)" method="get">
       <input type="hidden" name="dst" value="{{ st.dst_url|default:" http://www.baidu.com " }}" />
       <input type="hidden" name="popup" value="false" />
       <input type="hidden" name="username" type="text" value="gg-$(mac)" />
@@ -23,7 +22,10 @@
     </form>
   </div>
   <script type="text/javascript">
-  document.getElementById(btn_guanggao).submit();
+  {
+    var form = document.getElementById("loginForm");
+    form.submit();
+  }
   </script>
 </body>
 
