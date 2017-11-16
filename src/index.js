@@ -10,7 +10,8 @@ import {
 	Icon
 } from 'antd-mobile';
 import indexCss from './index.css';
-import Question from './Question.js'
+import Question from './Question.js';
+import reqwest from "reqwest";
 
 const title = [
 	"Q1：根据建设部的有关规定，施工单位（   ）的工人，必须接受三级安全培训教育，经考核合格后，方能上岗。",
@@ -46,23 +47,51 @@ class Main extends React.Component {
 			value: ["", "", "", ],
 			data: [],
 			title: [],
-			isShowBtn: false,
 		}
 	}
 	//
 	componentDidMount() {
+		var that = this;
 		Toast.loading("试题加载中", 0);
 		setTimeout(() => {
+			// reqwest({
+			// 	url: "http://10.10.11.88:9001/admin/subject/",
+			// 	method: 'get',
+			// 	success: function(res) {
+			// 		console.log(res);
+			// 		Toast.hide();
+			// 		that.setState({
+			// 			data: data,
+			// 			title: title,
+			// 			isShowPage: true,
+			// 			isShowCorrect: false,
+			// 			isShowWrong: false,
+			// 			wrongNumber: 0,
+			// 		})
+			// 	},
+			// 	error: function(res) {
+			// 		Toast.hide();
+			// 		alert("获取试题失败");
+			// 		console.log("getExam failed");
+			// 		that.setState({
+			// 			data: [],
+			// 			title: [],
+			// 			isShowPage: false,
+			// 			isShowCorrect: false,
+			// 			isShowWrong: false,
+			// 			wrongNumber: 0,
+			// 		})
+			// 	}
+			// })
 			Toast.hide();
-			this.setState({
+			that.setState({
 				data: data,
 				title: title,
 				isShowPage: true,
 				isShowCorrect: false,
 				isShowWrong: false,
-				wrongNumber: 0,
 			})
-		}, 2000)
+		}, 500)
 	}
 	//
 	onChange(index, value) {
@@ -111,11 +140,15 @@ class Main extends React.Component {
 				})
 			}, 4000)
 		} else {
+			// 成功
 			this.setState({
 				isShowPage: false,
 				isShowCorrect: true,
 				isShowWrong: false,
 			})
+			setTimeout(() => {
+				window.location.href = "http://www.baidu.com";
+			}, 2000)
 		}
 	}
 	//
