@@ -54,43 +54,43 @@ class Main extends React.Component {
 		var that = this;
 		Toast.loading("试题加载中", 0);
 		setTimeout(() => {
-			// reqwest({
-			// 	url: "http://10.10.11.88:9001/admin/subject/",
-			// 	method: 'get',
-			// 	success: function(res) {
-			// 		console.log(res);
-			// 		Toast.hide();
-			// 		that.setState({
-			// 			data: data,
-			// 			title: title,
-			// 			isShowPage: true,
-			// 			isShowCorrect: false,
-			// 			isShowWrong: false,
-			// 			wrongNumber: 0,
-			// 		})
-			// 	},
-			// 	error: function(res) {
-			// 		Toast.hide();
-			// 		alert("获取试题失败");
-			// 		console.log("getExam failed");
-			// 		that.setState({
-			// 			data: [],
-			// 			title: [],
-			// 			isShowPage: false,
-			// 			isShowCorrect: false,
-			// 			isShowWrong: false,
-			// 			wrongNumber: 0,
-			// 		})
-			// 	}
-			// })
-			Toast.hide();
-			that.setState({
-				data: data,
-				title: title,
-				isShowPage: true,
-				isShowCorrect: false,
-				isShowWrong: false,
+			reqwest({
+				url: "http://10.10.11.88:9001/admin/subject/",
+				method: 'get',
+				success: function(res) {
+					console.log(res);
+					Toast.hide();
+					that.setState({
+						data: data,
+						title: title,
+						isShowPage: true,
+						isShowCorrect: false,
+						isShowWrong: false,
+						wrongNumber: 0,
+					})
+				},
+				error: function(res) {
+					Toast.hide();
+					alert("获取试题失败");
+					console.log("getExam failed");
+					that.setState({
+						data: [],
+						title: [],
+						isShowPage: false,
+						isShowCorrect: false,
+						isShowWrong: false,
+						wrongNumber: 0,
+					})
+				}
 			})
+			// Toast.hide();
+			// that.setState({
+			// 	data: data,
+			// 	title: title,
+			// 	isShowPage: true,
+			// 	isShowCorrect: false,
+			// 	isShowWrong: false,
+			// })
 		}, 500)
 	}
 	//

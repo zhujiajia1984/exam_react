@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<script src="./tools/fastclick.js"></script>
+	<script src="/static/tools/fastclick.js"></script>
 	<script>
 	if ('addEventListener' in document) {
 		document.addEventListener('DOMContentLoaded', function() {
@@ -12,7 +12,7 @@
 		}, false);
 	}
 	if (!window.Promise) {
-		document.writeln('<script src="./tools/es6-promise.min.js"' + '>' + '<' + '/' + 'script>');
+		document.writeln('<script src="/static/tools/es6-promise.min.js"' + '>' + '<' + '/' + 'script>');
 	}
 	</script>
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -22,7 +22,7 @@
 <body>
 	<div id="root"></div>
 	<!-- <script src="/static/accounts/bundle.js"></script> -->
-	<script src="./bundle.js"></script>
+	<script src="/static/bundle.js"></script>
 </body>
 
 </html>
