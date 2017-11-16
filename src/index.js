@@ -13,38 +13,46 @@ import indexCss from './index.css';
 import Question from './Question.js';
 import reqwest from "reqwest";
 
-const title = [
-	"Q1：根据建设部的有关规定，施工单位（   ）的工人，必须接受三级安全培训教育，经考核合格后，方能上岗。",
-	"Q2：安全生产管理是实现安全生产的重要（   ）。",
-	"Q3：安全是（   ）"
-]
-const data = [
+var dataG = [
 	[
-		{ value: "A", label: '转岗' },
-		{ value: "B", label: '新入场' },
-		{ value: "C", label: '变换工种' },
-		{ value: "D", label: '从事特种作业' },
+		{ value: "A", label: '' },
+		{ value: "B", label: '' },
+		{ value: "C", label: '' },
+		{ value: "D", label: '' },
 	],
 	[
-		{ value: "A", label: '作用' },
-		{ value: "B", label: '保证' },
-		{ value: "C", label: '依据' },
-		{ value: "D", label: '措施' },
+		{ value: "A", label: '' },
+		{ value: "B", label: '' },
+		{ value: "C", label: '' },
+		{ value: "D", label: '' },
 	],
 	[
-		{ value: "A", label: '没有危险的状态' },
-		{ value: "B", label: '没有事故的状态' },
-		{ value: "C", label: '舒适的状态' },
-		{ value: "D", label: '生产系统中人员免遭不可承受危险的伤害' },
-	]
+		{ value: "A", label: '' },
+		{ value: "B", label: '' },
+		{ value: "C", label: '' },
+		{ value: "D", label: '' },
+	],
+	[
+		{ value: "A", label: '' },
+		{ value: "B", label: '' },
+		{ value: "C", label: '' },
+		{ value: "D", label: '' },
+	],
+	[
+		{ value: "A", label: '' },
+		{ value: "B", label: '' },
+		{ value: "C", label: '' },
+		{ value: "D", label: '' },
+	],
 ];
-const answer = ["B", "B", "D"];
+var answer = [];
+var title = [];
 //
 class Main extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			value: ["", "", "", ],
+			value: ["", "", "", "", ""],
 			data: [],
 			title: [],
 		}
@@ -54,43 +62,7 @@ class Main extends React.Component {
 		var that = this;
 		Toast.loading("试题加载中", 0);
 		setTimeout(() => {
-			reqwest({
-				url: "http://10.10.11.88:9001/admin/subject/",
-				method: 'get',
-				success: function(res) {
-					console.log(res);
-					Toast.hide();
-					that.setState({
-						data: data,
-						title: title,
-						isShowPage: true,
-						isShowCorrect: false,
-						isShowWrong: false,
-						wrongNumber: 0,
-					})
-				},
-				error: function(res) {
-					Toast.hide();
-					alert("获取试题失败");
-					console.log("getExam failed");
-					that.setState({
-						data: [],
-						title: [],
-						isShowPage: false,
-						isShowCorrect: false,
-						isShowWrong: false,
-						wrongNumber: 0,
-					})
-				}
-			})
-			// Toast.hide();
-			// that.setState({
-			// 	data: data,
-			// 	title: title,
-			// 	isShowPage: true,
-			// 	isShowCorrect: false,
-			// 	isShowWrong: false,
-			// })
+			that.getServerData();
 		}, 500)
 	}
 	//
@@ -120,25 +92,18 @@ class Main extends React.Component {
 		}
 		if (wrongs > 0) {
 			// 有错
+			var that = this;
 			this.setState({
 				isShowPage: false,
 				isShowCorrect: false,
 				isShowWrong: true,
 				wrongNumber: wrongs,
 			})
-			Toast.loading("试题加载中", 0);
+			Toast.loading("试题重新加载中", 0);
 			setTimeout(() => {
-				Toast.hide();
-				this.setState({
-					data: data,
-					title: title,
-					value: ["", "", "", ],
-					isShowPage: true,
-					isShowCorrect: false,
-					isShowWrong: false,
-					wrongNumber: 0,
-				})
-			}, 4000)
+				that.getServerData();
+				that.setState({ value: ["", "", "", "", ""] })
+			}, 2000)
 		} else {
 			// 成功
 			this.setState({
@@ -150,6 +115,49 @@ class Main extends React.Component {
 				window.location.href = "http://www.baidu.com";
 			}, 2000)
 		}
+	}
+	//
+	getServerData() {
+		var that = this;
+		reqwest({
+			url: "http://10.10.11.88:8000/admin/subject/",
+			method: 'get',
+			success: function(res) {
+				let result = JSON.parse(res);
+				// let result = res;
+				console.log(result);
+				title = [];
+				for (let i = 0; i < result.length; i++) {
+					title.push(`Q${i+1}：${result[i].stem}`);
+					dataG[i][0].label = result[i].answer1;
+					dataG[i][1].label = result[i].answer2;
+					dataG[i][2].label = result[i].answer3;
+					dataG[i][3].label = result[i].answer4;
+					answer.push(result[i].standard);
+				}
+				Toast.hide();
+				that.setState({
+					data: dataG,
+					title: title,
+					isShowPage: true,
+					isShowCorrect: false,
+					isShowWrong: false,
+					wrongNumber: 0,
+				})
+			},
+			error: function(res) {
+				Toast.hide();
+				alert("获取试题失败");
+				that.setState({
+					data: [],
+					title: [],
+					isShowPage: false,
+					isShowCorrect: false,
+					isShowWrong: false,
+					wrongNumber: 0,
+				})
+			}
+		})
 	}
 	//
 	render() {
