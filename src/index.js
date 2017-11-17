@@ -47,6 +47,14 @@ var dataG = [
 ];
 var answer = [];
 var title = [];
+var logForm = document.getElementById("loginForm");
+// var userMac = (document.getElementById("userMac")).value;
+// var userIp = (document.getElementById("userIp")).value;
+// var user = (document.getElementById("userParam")).value;
+// console.log(logForm);
+// console.log(userMac);
+// console.log(userIp);
+// console.log(user);
 //
 class Main extends React.Component {
 	constructor(props) {
@@ -55,6 +63,10 @@ class Main extends React.Component {
 			value: ["", "", "", "", ""],
 			data: [],
 			title: [],
+			isShowPage: false,
+			isShowCorrect: false,
+			isShowWrong: false,
+			wrongNumber: 0,
 		}
 	}
 	//
@@ -85,11 +97,23 @@ class Main extends React.Component {
 		}
 		//是否有错
 		let wrongs = 0;
+		let title = [];
+		let data = [];
+		let dataDetail = [];
+		let dataTemp = [];
 		for (let i = 0; i < this.state.value.length; i++) {
 			if (answer[i] != this.state.value[i]) {
-				wrongs++
+				wrongs++;
+				title.push(this.state.title[i]);
+				dataTemp = this.state.data[i];
+				for (let j = 0; j < dataTemp.length; j++) {
+					if (dataTemp[j].value == answer[i]) {
+						dataDetail.push(dataTemp[j]);
+					}
+				}
 			}
 		}
+		data.push(dataDetail);
 		if (wrongs > 0) {
 			// 有错
 			var that = this;
@@ -98,12 +122,17 @@ class Main extends React.Component {
 				isShowCorrect: false,
 				isShowWrong: true,
 				wrongNumber: wrongs,
+				title: title,
+				data: data,
 			})
 			Toast.loading("试题重新加载中", 0);
 			setTimeout(() => {
 				that.getServerData();
-				that.setState({ value: ["", "", "", "", ""] })
-			}, 2000)
+				that.setState({
+					value: ["", "", "", "", ""],
+					title: title,
+				})
+			}, 10000)
 		} else {
 			// 成功
 			this.setState({
@@ -112,21 +141,27 @@ class Main extends React.Component {
 				isShowWrong: false,
 			})
 			setTimeout(() => {
-				window.location.href = "http://www.baidu.com";
-			}, 2000)
+				//提交认证
+				logForm.submit();
+			}, 5000)
 		}
 	}
 	//
 	getServerData() {
 		var that = this;
 		reqwest({
-			url: "http://10.10.11.88:8000/admin/subject/",
+			// url: "http://10.10.11.88/subject" + user,
+			url: "http://10.10.11.88/subject/",
 			method: 'get',
+			data: {
+				user: "abc",
+			},
 			success: function(res) {
 				let result = JSON.parse(res);
 				// let result = res;
 				console.log(result);
 				title = [];
+				answer = [];
 				for (let i = 0; i < result.length; i++) {
 					title.push(`Q${i+1}：${result[i].stem}`);
 					dataG[i][0].label = result[i].answer1;
@@ -139,6 +174,7 @@ class Main extends React.Component {
 				that.setState({
 					data: dataG,
 					title: title,
+					value: ["", "", "", "", ""],
 					isShowPage: true,
 					isShowCorrect: false,
 					isShowWrong: false,
@@ -185,7 +221,7 @@ class Main extends React.Component {
 					img={<Icon type="check-circle" 
 								style={{ fill: '#1F90E6', width: '60px', height:'60px'}} />}
 					title="答题成功"
-					message="恭喜你，已可以正常上网！"
+					message="上网认证中..."
 				/>
 			</div>
 		const wrong =
@@ -196,6 +232,9 @@ class Main extends React.Component {
 					title="答题失败"
 					message={`您有${this.state.wrongNumber}道题答错了,请重新答题`}
 				/>
+				{this.state.title.map((item,index) => (
+					<div key={index}>{this.state.title[index]}</div>
+				))}
 			</div>
 		return (
 			<div>

@@ -1,168 +1,216 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-<title>{{ st.get_tmpl_json.title }}</title>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">
-<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-{% if isMikrotik %}
-<script type="text/javascript" charset="utf-8" src="http://{{ domain }}/vs{{ dev.get_hashid }}/?origin=gg&login=$(link-login-only)&dst=$(link-orig-esc)$(if trial == 'yes')&trial=true$(endif)&mac=$(mac-esc)$(if chap-id == 'yes')&chap=true&chap-id=$(chap-id)&chap-challenge=$(chap-challenge)$(endif)$(if error)&error=$(error)$(endif)&ip=$(ip)"></script>
-{% endif %}
-<style type="text/css" media="screen">
-  body{margin:0;padding:0;background-color:{{ st.get_tmpl_json.bgcolor|default:"#fff" }}}
-  .main{max-width:800px;margin:0 auto}
-  #header{background-color:#fff;}
-  #header div{max-width:800px;margin:0 auto}
-  .slider{background-color:#fff}
-  .section_jump{padding:1em;text-align:center;}
-  .welcome_text{text-align:center;font-size:1.5em;margin-bottom:1em;}
-  .jump_btn{height:3em; line-height:3em;width:12em; margin:0.1em; opacity:1;
-        border:solid 1px #ccc; border-radius:5px; background-color:red; color:#fff; font-size:1.5em;
+  <title>{{ st.get_tmpl_json.title }}</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" /> {% if isMikrotik %}
+  <script type="text/javascript" charset="utf-8" src="http://{{ domain }}/vs{{ dev.get_hashid }}/?origin=gg&login=$(link-login-only)&dst=$(link-orig-esc)$(if trial == 'yes')&trial=true$(endif)&mac=$(mac-esc)$(if chap-id == 'yes')&chap=true&chap-id=$(chap-id)&chap-challenge=$(chap-challenge)$(endif)$(if error)&error=$(error)$(endif)&ip=$(ip)"></script>
+  {% endif %}
+  <style type="text/css" media="screen">
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: {
+      {
+        st.get_tmpl_json.bgcolor|default: "#fff"
+      }
+    }
   }
-  .jump_btn:hover{ opacity:0.8; }
-  .agreement_ctn{margin:2em 0;}
-  .agreement_ctn a {text-decoration:underline; color:#090;}
-  .footer{margin-top:20px;text-align:center;padding:20px}
-</style>
-<script type="text/javascript">
-  function check(){
-    if(!document.getElementById('acceptAgreementChk').checked){
-        alert("您必须接受《免费Wi-Fi用户使用协议》才能继续使用 Wi-Fi！");
-        return false;
+
+  .main {
+    max-width: 800px;
+    margin: 0 auto
+  }
+
+  #header {
+    background-color: #fff;
+  }
+
+  #header div {
+    max-width: 800px;
+    margin: 0 auto
+  }
+
+  .slider {
+    background-color: #fff
+  }
+
+  .section_jump {
+    padding: 1em;
+    text-align: center;
+  }
+
+  .welcome_text {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 1em;
+  }
+
+  .jump_btn {
+    height: 3em;
+    line-height: 3em;
+    width: 12em;
+    margin: 0.1em;
+    opacity: 1;
+    border: solid 1px #ccc;
+    border-radius: 5px;
+    background-color: red;
+    color: #fff;
+    font-size: 1.5em;
+  }
+
+  .jump_btn:hover {
+    opacity: 0.8;
+  }
+
+  .agreement_ctn {
+    margin: 2em 0;
+  }
+
+  .agreement_ctn a {
+    text-decoration: underline;
+    color: #090;
+  }
+
+  .footer {
+    margin-top: 20px;
+    text-align: center;
+    padding: 20px
+  }
+  </style>
+  <script type="text/javascript">
+  function check() {
+    if (!document.getElementById('acceptAgreementChk').checked) {
+      alert("您必须接受《免费Wi-Fi用户使用协议》才能继续使用 Wi-Fi！");
+      return false;
     }
     return true;
   }
-</script>
+  </script>
 </head>
+
 <body>
   <div id="header">
     <div class="slider">
       {% if st.get_tmpl_json.image1_url %}
       <a href="{{ st.get_tmpl_json.image1_url }}" target="_blank">
       <img id="slider_img" src="http://{{domain}}{{ st.get_tmpl_json.image1 }}" style="width:100%">
-      </a>
-      {% else %}
-      <img id="slider_img" src="http://{{domain}}{{ st.get_tmpl_json.image1 }}" style="width:100%">
-      {% endif %}
+      </a> {% else %}
+      <img id="slider_img" src="http://{{domain}}{{ st.get_tmpl_json.image1 }}" style="width:100%"> {% endif %}
     </div>
   </div>
   <div class="main">
     <div class="content">
       <div class="section_jump">
-        <div class="welcome_text">{{ st.get_tmpl_json.welcome|default:"看直播 免流量 上网快<br /> 欢迎访问<span style=\"color:red\">我们的无线网</span>" }}</div>
-      
+        <div class="welcome_text">{{ st.get_tmpl_json.welcome|default:"看直播 免流量 上网快
+          <br /> 欢迎访问<span style=\ "color:red\">我们的无线网</span>" }}</div>
         {% if isMikrotik %}
         <form name="login" action="$(link-login-only)" method="post">
-        {% else %}
-        <form name="login" action="" method="get">
-        {% endif %}
-          <input type="hidden" name="dst" value="{{ st.dst_url|default:"http://www.baidu.com" }}" />
-          <input type="hidden" name="popup" value="false" />
-          <input type="hidden" name="username" type="text" value="gg-$(mac)"/>
-          <input type="hidden" name="password" type="password" value="$(ip)"/>
-          <button id="btn_guanggao" name="btn" onclick="return check();" class="jump_btn" type="submit">{{ st.get_tmpl_json.btn|default:"开始上网" }}</button>
-        </form>
-
-        <div class="agreement_ctn">
-          <input type="checkbox" id="acceptAgreementChk" checked="checked" />
-          <label for="acceptAgreementChk">我已阅读并接受</label>
-          <a href="toWifiUserAgreement.html" target="userAgreement" tabindex="-1">《Wi-Fi使用协议》</a>
-        </div>
-        {% if isMikrotik %}
-          $(if error)<div style="text-align:center;color: #FF8080; font-size: 9px">$(error)</div>$(endif)
-        {% endif %}
-
+          {% else %}
+          <form name="login" action="" method="get">
+            {% endif %}
+            <input type="hidden" name="dst" value="{{ st.dst_url|default:" http://www.baidu.com " }}" />
+            <input type="hidden" name="popup" value="false" />
+            <input type="hidden" name="username" type="text" value="gg-$(mac)" />
+            <input type="hidden" name="password" type="password" value="$(ip)" />
+            <button id="btn_guanggao" name="btn" onclick="return check();" class="jump_btn" type="submit">{{ st.get_tmpl_json.btn|default:"开始上网" }}</button>
+          </form>
+          <div class="agreement_ctn">
+            <input type="checkbox" id="acceptAgreementChk" checked="checked" />
+            <label for="acceptAgreementChk">我已阅读并接受</label>
+            <a href="toWifiUserAgreement.html" target="userAgreement" tabindex="-1">《Wi-Fi使用协议》</a>
+          </div>
+          {% if isMikrotik %} $(if error)
+          <div style="text-align:center;color: #FF8080; font-size: 9px">$(error)</div>$(endif) {% endif %}
       </div>
     </div>
   </div>
   <div class="footer">
-    {% if st.get_tmpl_json.copyright %}
-       {{ st.get_tmpl_json.copyright }}
-    {% else %}
-    &copy; doublecom.net
-    {% endif %}
+    {% if st.get_tmpl_json.copyright %} {{ st.get_tmpl_json.copyright }} {% else %} &copy; doublecom.net {% endif %}
   </div>
-<script> 
-  var secs = {{ st.waittime|default:"10" }}; 
+  <script>
+  var secs = { { st.waittime |
+        default: "10" } };
   var btn = document.getElementById("btn_guanggao");
-  btn.disabled=true; 
-  for(var i=1;i<=secs;i++) { 
-      window.setTimeout("update(" + i + ")", i * 1000); 
-  } 
-  function update(num) { 
-    if(num == secs) { 
-        btn.innerHTML =" {{ st.get_tmpl_json.btn|default:"开始上网" }} "; 
-        btn.disabled=false; 
-    } 
-    else { 
-        var printnr = secs-num; 
-        btn.innerHTML = "{{ st.get_tmpl_json.btn|default:"开始上网" }} (" + printnr +")"; 
-    } 
-  } 
-</script> 
-<script type="text/javascript" charset="utf-8">
+  btn.disabled = true;
+  for (var i = 1; i <= secs; i++) {
+    window.setTimeout("update(" + i + ")", i * 1000);
+  }
+
+  function update(num) {
+    if (num == secs) {
+      btn.innerHTML = " {{ st.get_tmpl_json.btn|default:"
+      开始上网 " }} ";
+      btn.disabled = false;
+    } else {
+      var printnr = secs - num;
+      btn.innerHTML = "{{ st.get_tmpl_json.btn|default:"
+      开始上网 " }} (" + printnr + ")";
+    }
+  }
+  </script>
+  <script type="text/javascript" charset="utf-8">
   //设置透明度
-  function setOpacity(elem,level){ 
-    if(elem.filters){ 
-      elem.style.filter = "alpha(opacity="+level+")";
-    }else{ 
+  function setOpacity(elem, level) {
+    if (elem.filters) {
+      elem.style.filter = "alpha(opacity=" + level + ")";
+    } else {
       elem.style.opacity = level / 100;
     }
   }
   //淡入处理函数
-  function fadeIn(elem){ 
-    setOpacity(elem,0); //初始全透明
-    for(var i = 0;i<=20;i++){ //透明度改变 20 * 5 = 100
-      (function(){ 
-        var level = i * 5;  //透明度每次变化值
-        setTimeout(function(){ 
+  function fadeIn(elem) {
+    setOpacity(elem, 0); //初始全透明
+    for (var i = 0; i <= 20; i++) { //透明度改变 20 * 5 = 100
+      (function() {
+        var level = i * 5; //透明度每次变化值
+        setTimeout(function() {
           setOpacity(elem, level)
-        },i*25); //i * 25 即为每次改变透明度的时间间隔，自行设定
-      })(i);     //每次循环变化一次
+        }, i * 25); //i * 25 即为每次改变透明度的时间间隔，自行设定
+      })(i); //每次循环变化一次
     }
   }
- 
+
   //淡出处理函数
-  function fadeOut(elem){ 
-    for(var i = 0;i<=20;i++){ //透明度改变 20 * 5 = 100
-      (function(){ 
+  function fadeOut(elem) {
+    for (var i = 0; i <= 20; i++) { //透明度改变 20 * 5 = 100
+      (function() {
         var level = 100 - i * 5; //透明度每次变化值
-        setTimeout(function(){ 
+        setTimeout(function() {
           setOpacity(elem, level)
-        },i*25); //i * 25 即为每次改变透明度的时间间隔，自行设定
-      })(i);     //每次循环变化一次
+        }, i * 25); //i * 25 即为每次改变透明度的时间间隔，自行设定
+      })(i); //每次循环变化一次
     }
-  }
-{% if isMikrotik %}
-  window.onload = function() {
-{% endif %}
-    var arr=new Array();
-    arr[0]="http://{{ domain }}{{ st.get_tmpl_json.image1 }}";//放图片地址
-    arr[1]="http://{{ domain }}{{ st.get_tmpl_json.image2 }}";
-    arr[2]="http://{{ domain }}{{ st.get_tmpl_json.image3 }}";
-    arr[3]="http://{{ domain }}{{ st.get_tmpl_json.image4 }}";
-    arr[4]="http://{{ domain }}{{ st.get_tmpl_json.image5 }}";
-    var num=0;
-    var header =  document.getElementById("header");
-    setInterval(turnpic,4000); //每隔4秒转换图片
-    function turnpic(){
-      idsrc=document.getElementById("slider_img");
-      if(num==arr.length-1)
-        num=0;
+  } { % if isMikrotik % }
+  window.onload = function() { { % endif % }
+    var arr = new Array();
+    arr[0] = "http://{{ domain }}{{ st.get_tmpl_json.image1 }}"; //放图片地址
+    arr[1] = "http://{{ domain }}{{ st.get_tmpl_json.image2 }}";
+    arr[2] = "http://{{ domain }}{{ st.get_tmpl_json.image3 }}";
+    arr[3] = "http://{{ domain }}{{ st.get_tmpl_json.image4 }}";
+    arr[4] = "http://{{ domain }}{{ st.get_tmpl_json.image5 }}";
+    var num = 0;
+    var header = document.getElementById("header");
+    setInterval(turnpic, 4000); //每隔4秒转换图片
+    function turnpic() {
+      idsrc = document.getElementById("slider_img");
+      if (num == arr.length - 1)
+        num = 0;
       else
-        num+=1;
-      idsrc.src=arr[num];
-      if (num%2==0)
-      header.style.backgroundColor="#fff";
+        num += 1;
+      idsrc.src = arr[num];
+      if (num % 2 == 0)
+        header.style.backgroundColor = "#fff";
       else
-      header.style.backgroundColor="#fef200";
+        header.style.backgroundColor = "#fef200";
       fadeIn(header);
-    }
-{% if isMikrotik %}
-  }
-{% endif %}
-</script>
+    } { % if isMikrotik % }
+  } { % endif % }
+  </script>
 </body>
+
 </html>
