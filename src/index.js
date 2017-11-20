@@ -11,7 +11,7 @@ import {
 } from 'antd-mobile';
 import indexCss from './index.css';
 import Question from './Question.js';
-import reqwest from "reqwest";
+// import reqwest from "reqwest";
 
 var dataG = [
 	[
@@ -92,25 +92,13 @@ class Main extends React.Component {
 			Toast.info("请先进行答题", 2);
 			return;
 		}
-		//是否有错
+		// 是否有错
 		let wrongs = 0;
-		let title = [];
-		// let data = [];
-		// let dataDetail = [];
-		// let dataTemp = [];
-		// for (let i = 0; i < this.state.value.length; i++) {
-		// 	if (answer[i] != this.state.value[i]) {
-		// 		wrongs++;
-		// 		title.push(this.state.title[i]);
-		// 		dataTemp = this.state.data[i];
-		// 		for (let j = 0; j < dataTemp.length; j++) {
-		// 			if (dataTemp[j].value == answer[i]) {
-		// 				dataDetail.push(dataTemp[j]);
-		// 			}
-		// 		}
-		// 	}
-		// }
-		// data.push(dataDetail);
+		for (let i = 0; i < this.state.value.length; i++) {
+			if (answer[i] != this.state.value[i]) {
+				wrongs++;
+			}
+		}
 		if (wrongs > 0) {
 			// 有错
 			var that = this;
@@ -129,7 +117,7 @@ class Main extends React.Component {
 					value: ["", "", "", "", ""],
 					title: title,
 				})
-			}, 10000)
+			}, 3000)
 		} else {
 			// 成功
 			this.setState({
@@ -140,14 +128,15 @@ class Main extends React.Component {
 			setTimeout(() => {
 				//提交认证
 				logForm.submit();
-			}, 5000)
+			}, 3000)
 		}
 	}
 	//
 	getServerData() {
 		var that = this;
 		var url = `http://${domain}/subject/?time=${Math.random()}&user=${devPK}`;
-		var url2 = "http://10.10.11.88/subject/?time=" + Math.random();
+		var url2 = `http://10.10.11.88/subject/?time=${Math.random()}&user=${devPK}`;
+		var url3 = `http://portal.doublecom.net/subject/?time=${Math.random()}&user=${devPK}`;
 
 		//
 		var xhr;
@@ -157,12 +146,13 @@ class Main extends React.Component {
 			alert("不支持XMLHttpRequest");
 			return;
 		}
-		xhr.open("GET", url, true);
+		xhr.open("GET", url3, true);
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				// document.getElementById("myDiv").innerHTML = xhr.responseText;
 				let result = eval(xhr.responseText);
-				// console.log(result);
+				console.log(result);
+				// alert("abc");
 				title = [];
 				answer = [];
 				for (let i = 0; i < result.length; i++) {
@@ -238,7 +228,9 @@ class Main extends React.Component {
 	render() {
 		const content =
 			<div>
-				{this.state.data.map((item,index) => (
+				{this.state.data.map((item,index) => {
+					// (this.state.data[index])?
+					return (this.state.data[index])?
 					<Question key={index}
 						title={this.state.title[index]}
 						data={this.state.data[index]}
@@ -246,7 +238,8 @@ class Main extends React.Component {
 						onChange={this.onChange.bind(this, index)}
 					>
 					</Question>
-				))}
+					:"";
+				})}
 				<WingBlank>
 					<Button type="primary" 
 							onClick={this.submitAnswer.bind(this)}
@@ -271,9 +264,6 @@ class Main extends React.Component {
 					title="答题失败"
 					message={`您有${this.state.wrongNumber}道题答错了,请重新答题`}
 				/>
-				{this.state.title.map((item,index) => (
-					<div key={index}>{this.state.title[index]}</div>
-				))}
 			</div>
 		return (
 			<div>
