@@ -28,15 +28,16 @@ export default class Question extends React.Component {
 				</WingBlank>
 				<WhiteSpace size="md"></WhiteSpace>
 				<List>
-					{this.props.data.map(item => (
+					{this.props.data.map(item => {
+						return (item.label)?
 						<RadioItem 
 							key={item.value}
 							checked={this.props.value === item.value}
 							onChange={this.onChange.bind(this, item.value)}	
 						>
 							{item.value + "：" + item.label}
-						</RadioItem>
-					))}
+						</RadioItem>:""
+					})}
 				</List>
 				<WhiteSpace size="lg"></WhiteSpace>
 			</div>

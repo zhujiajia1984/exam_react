@@ -151,7 +151,7 @@ class Main extends React.Component {
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				// document.getElementById("myDiv").innerHTML = xhr.responseText;
 				let result = eval(xhr.responseText);
-				console.log(result);
+				// console.log(result);
 				// alert("abc");
 				title = [];
 				answer = [];
@@ -228,9 +228,7 @@ class Main extends React.Component {
 	render() {
 		const content =
 			<div>
-				{this.state.data.map((item,index) => {
-					// (this.state.data[index])?
-					return (this.state.data[index])?
+				{this.state.data.map((item,index) => (
 					<Question key={index}
 						title={this.state.title[index]}
 						data={this.state.data[index]}
@@ -238,8 +236,7 @@ class Main extends React.Component {
 						onChange={this.onChange.bind(this, index)}
 					>
 					</Question>
-					:"";
-				})}
+				))}
 				<WingBlank>
 					<Button type="primary" 
 							onClick={this.submitAnswer.bind(this)}
