@@ -12,7 +12,8 @@ module.exports = {
         port: 18500,
         historyApiFallback: true,
     },
-    devtool: 'source-map', // source-map
+    // devtool: 'source-map', // source-map
+    devtool: 'none',
     module: {
         rules: [{
             test: /\.(js|jsx)$/,

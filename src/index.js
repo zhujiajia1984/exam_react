@@ -55,6 +55,7 @@ var domain = document.getElementById("domain").value;
 //
 class Main extends React.Component {
 	constructor(props) {
+		console.log("go to constructor");
 		super(props);
 		this.state = {
 			value: ["", "", "", "", ""],
@@ -69,7 +70,9 @@ class Main extends React.Component {
 	//
 	componentDidMount() {
 		var that = this;
+		console.log("go to componentDidMount");
 		Toast.loading("试题加载中", 0);
+		console.log("will go to request");
 		setTimeout(() => {
 			that.getServerData();
 		}, 500)
@@ -139,6 +142,7 @@ class Main extends React.Component {
 		var url3 = `http://portal.doublecom.net/subject/?time=${Math.random()}&user=${devPK}`;
 
 		//
+		console.log("go to request");
 		var xhr;
 		if (window.XMLHttpRequest) {
 			xhr = new XMLHttpRequest();
@@ -146,11 +150,12 @@ class Main extends React.Component {
 			alert("不支持XMLHttpRequest");
 			return;
 		}
-		xhr.open("GET", url3, true);
+		xhr.open("GET", url2, true);
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				// document.getElementById("myDiv").innerHTML = xhr.responseText;
 				let result = eval(xhr.responseText);
+				console.log("request ok");
 				// console.log(result);
 				// alert("abc");
 				title = [];
