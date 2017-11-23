@@ -19,11 +19,15 @@
     document.writeln('<script src="./tools/es6-promise.min.js"' + '>' + '<' + '/' + 'script>');
   }
   </script>
+  <script src="./eruda/eruda.min.js"></script>
+  <script>
+  eruda.init();
+  </script>
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>测试问卷</title>
-  {% if isMikrotik %}
+  <!--   {% if isMikrotik %}
   <script type="text/javascript" charset="utf-8" src="http://{{ domain }}/vs{{ dev.get_hashid }}/?origin=gg&login=$(link-login-only)&dst=$(link-orig-esc)$(if trial == 'yes')&trial=true$(endif)&mac=$(mac-esc)$(if chap-id == 'yes')&chap=true&chap-id=$(chap-id)&chap-challenge=$(chap-challenge)$(endif)$(if error)&error=$(error)$(endif)&ip=$(ip)"></script>
-  {% endif %}
+  {% endif %} -->
 </head>
 
 <body>
