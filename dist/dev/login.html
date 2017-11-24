@@ -4,12 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <script src="http://{{ domain }}/static/tools/eruda.min.js"></script>
-  <script>
-  eruda.init();
-  </script>
   <script src="http://{{ domain }}/static/tools/fastclick.js"></script>
-  <!-- <script src="./tools/fastclick.js"></script> -->
   <script>
   if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function() {
@@ -19,36 +14,313 @@
   if (!window.Promise) {
     document.writeln('<script src="http://{{ domain }}/static/tools/es6-promise.min.js"' + '>' + '<' + '/' + 'script>');
   }
-  // if (!window.Promise) {
-  //   document.writeln('<script src="./tools/es6-promise.min.js"' + '>' + '<' + '/' + 'script>');
-  // }
   </script>
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>测试问卷</title>
   {% if isMtk %}
   <script type="text/javascript" charset="utf-8" src="http://{{ domain }}/vs{{ dev.get_hashid }}/?origin={{portal}}&login=$(link-login-only)&dst=$(link-orig-esc)$(if trial == 'yes')&trial=true$(endif)&mac=$(mac-esc)$(if chap-id == 'yes')&chap=true&chap-id=$(chap-id)&chap-challenge=$(chap-challenge)$(endif)$(if error)&error=$(error)$(endif)&ip=$(ip)"></script>
   {% endif %}
+  <style type="text/css">
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+  }
+
+  .regular-radio {
+    display: none;
+  }
+
+  .regular-radio+label {
+    -webkit-appearance: none;
+    background-color: #fafafa;
+    border: 1px solid #cacece;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 9px;
+    border-radius: 50px;
+    display: inline-block;
+    position: relative;
+  }
+
+  .regular-radio:checked+label:after {
+    content: ' ';
+    width: 12px;
+    height: 12px;
+    border-radius: 50px;
+    position: absolute;
+    top: 3px;
+    background: #99a1a7;
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
+    text-shadow: 0px;
+    left: 3px;
+    font-size: 32px;
+  }
+
+  .regular-radio:checked+label {
+    background-color: #e9ecee;
+    color: #99a1a7;
+    border: 1px solid #adb8c0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1), inset 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .regular-radio+label:active,
+  .regular-radio:checked+label:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .big-radio+label {
+    padding: 16px;
+  }
+
+  .big-radio:checked+label:after {
+    width: 24px;
+    height: 24px;
+    left: 4px;
+    top: 4px;
+  }
+
+  .frame {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    background: #108ee9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: flex-start; align-items: center;*/
+    padding-top: 50px;
+  }
+
+  .question {
+    width: 100%;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .qTitle {
+    word-wrap: break-word;
+    margin: 0px;
+    padding: 10px;
+    line-height: 25px;
+  }
+
+  .qSelects {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e9e9e9;
+    padding-left: 10px;
+    background-color: white;
+  }
+
+  .oneSelect {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid #e9e9e9;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    flex: 1;
+  }
+
+  .oneAnswer {
+    margin: 0px;
+    margin-left: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .footer {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  </style>
 </head>
 
 <body>
-  <input id="domain" type="hidden" value="{{domain}}">
-  <input id="devpk" type="hidden" type="text" value="{{dev.pk}}">
-  <form id="loginForm" name="login" action="$(link-login-only)" method="post">
-    <input type="hidden" name="dst" value="{{ st.dst_url|default:" http://www.baidu.com " }}" />
-    <input type="hidden" name="popup" value="false" />
-    <input id="userMac" type="hidden" name="username" type="text" value="gg-$(mac)" />
-    <input id="userIp" type="hidden" name="password" type="password" value="$(ip)" />
-    <button style="display: none" id="btn_guanggao" name="btn" type="submit">{{ st.get_tmpl_json.btn|default:"开始上网" }}</button>
-  </form>
+  <div style="display: none">
+    <input id="domain" type="text" value="{{domain}}">
+    <input id="devpk" type="text" value="{{dev.pk}}">
+    <form id="loginForm" name="login" action="$(link-login-only)" method="post">
+      <input name="dst" value="{{ st.dst_url|default:" http://www.baidu.com " }}" />
+      <input name="popup" value="false" />
+      <input id="userMac" name="username" type="text" value="gg-$(mac)" />
+      <input id="userIp" name="password" type="password" value="$(ip)" />
+      <button id="btn_guanggao" name="btn" type="submit">{{ st.get_tmpl_json.btn|default:"开始上网" }}</button>
+    </form>
+  </div>
   <div id="root"></div>
-  <!-- <script src="http://{{ domain }}/static/bundle.js"></script> -->
-  <!-- <script src="./bundle.js"></script> -->
+  <div id="frame1" class="frame" style="display: none">
+    <div class="header">
+      <span style="color: white">测试问卷</span>
+    </div>
+    <div class="content">
+      <div class="question">
+        <p class="qTitle" id="title0"></p>
+        <div class="qSelects" id="sel0">
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="A" type="radio" id="radio-1-1" name="radio-1-set" class="regular-radio" />
+            <label for="radio-1-1"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="B" type="radio" id="radio-1-2" name="radio-1-set" class="regular-radio" />
+            <label for="radio-1-2"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="C" type="radio" id="radio-1-3" name="radio-1-set" class="regular-radio" />
+            <label for="radio-1-3"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="D" type="radio" id="radio-1-4" name="radio-1-set" class="regular-radio" />
+            <label for="radio-1-4"></label>
+          </div>
+        </div>
+      </div>
+      <div class="question">
+        <p class="qTitle" id="title1"></p>
+        <div class="qSelects" id="sel1">
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="A" type="radio" id="radio-2-1" name="radio-2-set" class="regular-radio" />
+            <label for="radio-2-1"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="B" type="radio" id="radio-2-2" name="radio-2-set" class="regular-radio" />
+            <label for="radio-2-2"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="C" type="radio" id="radio-2-3" name="radio-2-set" class="regular-radio" />
+            <label for="radio-2-3"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="D" type="radio" id="radio-2-4" name="radio-2-set" class="regular-radio" />
+            <label for="radio-2-4"></label>
+          </div>
+        </div>
+      </div>
+      <div class="question">
+        <p class="qTitle" id="title2"></p>
+        <div class="qSelects" id="sel2">
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="A" type="radio" id="radio-3-1" name="radio-3-set" class="regular-radio" />
+            <label for="radio-3-1"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="B" type="radio" id="radio-3-2" name="radio-3-set" class="regular-radio" />
+            <label for="radio-3-2"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="C" type="radio" id="radio-3-3" name="radio-3-set" class="regular-radio" />
+            <label for="radio-3-3"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="D" type="radio" id="radio-3-4" name="radio-3-set" class="regular-radio" />
+            <label for="radio-3-4"></label>
+          </div>
+        </div>
+      </div>
+      <div class="question">
+        <p class="qTitle" id="title3"></p>
+        <div class="qSelects" id="sel3">
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="A" type="radio" id="radio-4-1" name="radio-4-set" class="regular-radio" />
+            <label for="radio-4-1"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="B" type="radio" id="radio-4-2" name="radio-4-set" class="regular-radio" />
+            <label for="radio-4-2"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="C" type="radio" id="radio-4-3" name="radio-4-set" class="regular-radio" />
+            <label for="radio-4-3"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="D" type="radio" id="radio-4-4" name="radio-4-set" class="regular-radio" />
+            <label for="radio-4-4"></label>
+          </div>
+        </div>
+      </div>
+      <div class="question">
+        <p class="qTitle" id="title4"></p>
+        <div class="qSelects" id="sel4">
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="A" type="radio" id="radio-5-1" name="radio-5-set" class="regular-radio" />
+            <label for="radio-5-1"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="B" type="radio" id="radio-5-2" name="radio-5-set" class="regular-radio" />
+            <label for="radio-5-2"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="C" type="radio" id="radio-5-3" name="radio-5-set" class="regular-radio" />
+            <label for="radio-5-3"></label>
+          </div>
+          <div class="oneSelect" name="group">
+            <p class="oneAnswer"></p>
+            <input value="D" type="radio" id="radio-5-4" name="radio-5-set" class="regular-radio" />
+            <label for="radio-5-4"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div id="tijiao" style="display:flex; justify-content:center; align-items:center;width:90%;height: 40px;background-color: #108ee9">
+        <span style="color:white">提交</span>
+      </div>
+    </div>
+  </div>
+  <!-- js -->
   <script>
-  (function() {
-    var prefix = 'http://{{ domain }}/static/bundle.js?time=';
-    var src = prefix + Math.random();
-    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
-  })();
+  var time = Math.random();
+  var u = navigator.userAgent;
+  if (!!u.match(/AppleWebKit.*Mobile.*/) && u.indexOf("HONOR") != -1) {
+    var urlJq = 'http://{{ domain }}/static/tools/jquery-3.2.1.min.js';
+    document.write('<scr' + 'ipt src="' + urlJq + '"></scr' + 'ipt>');
+    var urlCompatible = 'http://{{ domain }}/static/compatible.js';
+    document.write('<scr' + 'ipt src="' + urlCompatible + '"></scr' + 'ipt>');
+  } else {
+    var urlNormal = 'http://{{ domain }}/static/bundle.js?time=' + time;
+    document.write('<scr' + 'ipt src="' + urlNormal + '"></scr' + 'ipt>');
+  }
   </script>
 </body>
 
