@@ -55,7 +55,6 @@ var domain = document.getElementById("domain").value;
 //
 class Main extends React.Component {
 	constructor(props) {
-		console.log("go to constructor");
 		super(props);
 		this.state = {
 			value: ["", "", "", "", ""],
@@ -70,9 +69,7 @@ class Main extends React.Component {
 	//
 	componentDidMount() {
 		var that = this;
-		console.log("go to componentDidMount");
 		Toast.loading("试题加载中", 0);
-		console.log("will go to request");
 		setTimeout(() => {
 			that.getServerData();
 		}, 500)
@@ -142,7 +139,6 @@ class Main extends React.Component {
 		var url3 = `http://portal.doublecom.net/subject/?time=${Math.random()}&user=${devPK}`;
 
 		//
-		console.log("go to request");
 		var xhr;
 		if (window.XMLHttpRequest) {
 			xhr = new XMLHttpRequest();
@@ -150,14 +146,12 @@ class Main extends React.Component {
 			alert("不支持XMLHttpRequest");
 			return;
 		}
-		xhr.open("GET", url2, true);
+		xhr.open("GET", url3, true);
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				// document.getElementById("myDiv").innerHTML = xhr.responseText;
 				let result = eval(xhr.responseText);
-				console.log("request ok");
 				// console.log(result);
-				// alert("abc");
 				title = [];
 				answer = [];
 				for (let i = 0; i < result.length; i++) {
@@ -181,53 +175,6 @@ class Main extends React.Component {
 			}
 		}
 		xhr.send(null);
-
-		//
-		// reqwest({
-		// 	// url: "http://10.10.11.88/subject" + user,
-		// 	url: url,
-		// 	method: 'get',
-		// 	data: {
-		// 		user: devPK.toString(),
-		// 	},
-		// 	success: function(res) {
-		// 		let result = JSON.parse(res);
-		// 		// let result = res;
-		// 		console.log(result);
-		// 		title = [];
-		// 		answer = [];
-		// 		for (let i = 0; i < result.length; i++) {
-		// 			title.push(`Q${i+1}：${result[i].stem}`);
-		// 			dataG[i][0].label = result[i].answer1;
-		// 			dataG[i][1].label = result[i].answer2;
-		// 			dataG[i][2].label = result[i].answer3;
-		// 			dataG[i][3].label = result[i].answer4;
-		// 			answer.push(result[i].standard);
-		// 		}
-		// 		Toast.hide();
-		// 		that.setState({
-		// 			data: dataG,
-		// 			title: title,
-		// 			value: ["", "", "", "", ""],
-		// 			isShowPage: true,
-		// 			isShowCorrect: false,
-		// 			isShowWrong: false,
-		// 			wrongNumber: 0,
-		// 		})
-		// 	},
-		// 	error: function(res) {
-		// 		Toast.hide();
-		// 		alert("获取试题失败");
-		// 		that.setState({
-		// 			data: [],
-		// 			title: [],
-		// 			isShowPage: false,
-		// 			isShowCorrect: false,
-		// 			isShowWrong: false,
-		// 			wrongNumber: 0,
-		// 		})
-		// 	}
-		// })
 	}
 	//
 	render() {
