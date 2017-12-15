@@ -2,7 +2,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: ['whatwg-fetch', './src/index.js'],
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
@@ -12,8 +12,8 @@ module.exports = {
         port: 18500,
         historyApiFallback: true,
     },
-    // devtool: 'source-map', // source-map
-    devtool: 'none',
+    devtool: 'source-map', // source-map
+    // devtool: 'none',
     module: {
         rules: [{
             test: /\.(js|jsx)$/,

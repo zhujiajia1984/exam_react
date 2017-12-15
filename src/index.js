@@ -7,7 +7,7 @@ import {
 	Button,
 	WingBlank,
 	Result,
-	Icon
+	Icon,
 } from 'antd-mobile';
 import indexCss from './index.css';
 import Question from './Question.js';
@@ -68,11 +68,32 @@ class Main extends React.Component {
 	}
 	//
 	componentDidMount() {
-		var that = this;
-		Toast.loading("试题加载中", 0);
-		setTimeout(() => {
-			that.getServerData();
-		}, 500)
+		let url = "https://weiquaninfo.cn/wxPublicAccount/getAccessToken";
+		fetch(url)
+			.then(res => {
+				let contentType = res.headers.get("Content-Type");
+				if (res.status == 200 && contentType && contentType.includes("application/json")) {
+					return res.json();
+				} else {
+					throw new Error(`status:${res.status} contentType:${contentType}`);
+				}
+			})
+			.then(resJson => {
+				// 成功
+				if (resJson.stat == "success") {
+					alert("success");
+				}
+				return resJson;
+			})
+			.catch(error => {
+				console.log(error);
+				alert(`数据交互失败：${error.message}`);
+			})
+		// var that = this;
+		// Toast.loading("试题加载中", 0);
+		// setTimeout(() => {
+		// 	that.getServerData();
+		// }, 500)
 	}
 	//
 	onChange(index, value) {
